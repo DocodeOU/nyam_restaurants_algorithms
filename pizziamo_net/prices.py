@@ -1,25 +1,24 @@
 from functools import reduce
 from typing import List
 
-from django_models.models import Pizza, Consts, TypeOfPizza, DeliveryType
-from django_models.models_from_json import PizzaFromJson, IngredientFromJson, PizzaOptionFromJson
+from models import Pizza, Ingredient, PizzaOption
 
 COSTO_CONSEGNA = 0.5
 
 
-def _price_pizza_menu(pizza: PizzaFromJson, pizza_menu: Pizza) -> float:
+def _price_pizza_menu(pizza: Pizza, pizza_menu: Pizza) -> float:
     """
     Prezzo di una pizza che ha gli ingredienti di una pizza del menu
     Si parte dal prezzo del menu e si aggiunge il prezzo degli ingredienti in piu
     """
     
-    def _get_ingredient_price(acc: float, ing: IngredientFromJson):
+    def _get_ingredient_price(acc: float, ing: Ingredient):
         return acc + ing.price * (ing.quantity - 1)
     
     return reduce(_get_ingredient_price, pizza.ingredients, initial=pizza_menu.price)
 
 
-def _price_pizza_not_in_menu(pizza: PizzaFromJson) -> float:
+def _price_pizza_not_in_menu(pizza: Pizza) -> float:
     all_pizzas: List[Pizza] = Pizza.objects.all()
     consts: Consts = Consts.objects.first()
     ing_mozzarella = consts.ingredient_mozzarella
@@ -37,14 +36,14 @@ def _price_pizza_not_in_menu(pizza: PizzaFromJson) -> float:
         price_base = 4
     
     # aggiungiamo il prezzo degli ingredienti
-    def _get_ingredient_price(acc: float, ing: IngredientFromJson):
+    def _get_ingredient_price(acc: float, ing: Ingredient):
         return acc + ing.price * ing.quantity
     
     price_with_ingredients = reduce(_get_ingredient_price, pizza.ingredients, initial=price_base)
     return price_with_ingredients
 
 
-def price_pizza(pizza: PizzaFromJson) -> float:
+def price_pizza(pizza: Pizza) -> float:
     all_pizzas: List[Pizza] = Pizza.objects.all()
     try:
         # cerchiamo se è presente nel menu
@@ -55,18 +54,18 @@ def price_pizza(pizza: PizzaFromJson) -> float:
         # pizza non trovata
         price_without_options = _price_pizza_not_in_menu(pizza=pizza)
     
-    def _get_pizza_option_price(acc: float, option: PizzaOptionFromJson):
+    def _get_pizza_option_price(acc: float, option: PizzaOption):
         return acc + option.price
     
     price_with_option = reduce(_get_pizza_option_price, pizza.pizza_options, initial=price_without_options)
     return price_with_option
 
 
-def total_price_of_pizzas(pizzas_in_cart: List[PizzaFromJson], delivery_type: int) -> float:
-    def _get_pizza_price(acc: float, pizza: PizzaFromJson):
+def total_price_of_pizzas(pizzas_in_cart: List[Pizza], delivery_type: int) -> float:
+    def _get_pizza_price(acc: float, pizza: Pizza):
         return acc + pizza.price
     
-    def _get_pizza_quantity(acc: int, pizza: PizzaFromJson):
+    def _get_pizza_quantity(acc: int, pizza: Pizza):
         return acc + pizza.quantity
     
     price_of_pizzas = reduce(_get_pizza_price, pizzas_in_cart, initial=0)

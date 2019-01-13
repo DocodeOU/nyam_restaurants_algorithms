@@ -1,36 +1,35 @@
 from typing import List
 
-from django_models.models import Pizza
-from django_models.models_from_json import IngredientFromJson, PizzaOptionFromJson
+from models import Ingredient, PizzaOption
 
 
-def _name_with_pizza_options(pizza: PizzaOptionFromJson, initial_name: str) -> str:
+def _name_with_pizza_options(pizza: PizzaOption, initial_name: str) -> str:
     pass
 
 
-def _name_of_missing_ingredient(ingredient: IngredientFromJson, pizza_menu: Pizza) -> str:
+def _name_of_missing_ingredient(ingredient: Ingredient, pizza_menu: Pizza) -> str:
     pass
 
 
-def _name_of_pizza_ingredient(ingredient: IngredientFromJson, pizza_menu: Pizza) -> str:
+def _name_of_pizza_ingredient(ingredient: Ingredient, pizza_menu: Pizza) -> str:
     pass
 
 
-def ingredient_was_not_in_da_pizza(ingredient: IngredientFromJson, pizza_menu: Pizza) -> bool:
+def ingredient_was_not_in_da_pizza(ingredient: Ingredient, pizza_menu: Pizza) -> bool:
     pass
 
 
-def _find_missing_ingredients(pizza: PizzaOptionFromJson, pizza_menu: Pizza) -> List[IngredientFromJson]:
+def _find_missing_ingredients(pizza: PizzaOption, pizza_menu: Pizza) -> List[Ingredient]:
     pass
 
 
-def _find_added_ingredients(pizza: PizzaOptionFromJson, pizza_menu: Pizza) -> List[IngredientFromJson]:
+def _find_added_ingredients(pizza: PizzaOption, pizza_menu: Pizza) -> List[Ingredient]:
     pass
 
 
-def _find_similar_pizza(pizza: PizzaOptionFromJson):
+def _find_similar_pizza(pizza: PizzaOption):
     pass
 
 
-def name_of_pizza(pizza: PizzaOptionFromJson) -> str:
+def name_of_pizza(pizza: PizzaOption) -> str:
     pass
