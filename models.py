@@ -7,6 +7,10 @@ class Ingredient:
         self.name: str = json['name']
         self.price: float = json['price']
         self.quantity: float = json['quantity']
+        self.cooked_in_oven_by_default: bool = json['cooked_in_oven_by_default']
+        self.uscita: bool = json['uscita'] if 'uscita' in json else not self.cooked_in_oven_by_default
+        self.just_a_little: bool = json['just_a_little'] if 'just_a_little' in json else False
+        
 
 
 class PizzaOption:
