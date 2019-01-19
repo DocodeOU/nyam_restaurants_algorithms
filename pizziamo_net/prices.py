@@ -1,8 +1,8 @@
 from functools import reduce
 from typing import List
 
-from models import Pizza, Ingredient, PizzaOption
-from pizziamo_net.database import DatabasePizziamoNet
+from ..models import Pizza, Ingredient, PizzaOption
+from .database import DatabasePizziamoNet
 
 COSTO_CONSEGNA = 0.5
 

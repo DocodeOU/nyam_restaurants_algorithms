@@ -1,6 +1,6 @@
 from typing import List
 
-from models import PizzaOption, Pizza, Ingredient
+from ..models import PizzaOption, Pizza, Ingredient
 
 
 def _name_with_pizza_options(pizza: PizzaOption, initial_name: str) -> str:

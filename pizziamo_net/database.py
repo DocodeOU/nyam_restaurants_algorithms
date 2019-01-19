@@ -1,5 +1,5 @@
-from database import AbstractDatabase
-from models import Consts, Pizza, Drink, Dessert, Ingredient, PizzaOption
+from ..database import AbstractDatabase
+from ..models import Consts, Pizza, Drink, Dessert, Ingredient, PizzaOption
 
 
 class DatabasePizziamoNet(AbstractDatabase):
