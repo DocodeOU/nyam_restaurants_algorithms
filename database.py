@@ -1,6 +1,6 @@
 from typing import List
 
-from models import Consts, Pizza, Drink, Dessert, Ingredient, PizzaOption
+from .models import Consts, Pizza, Drink, Dessert, Ingredient, PizzaOption
 
 
 class AbstractDatabase:
