@@ -42,16 +42,16 @@ class Dessert:
         self.price: float = json['price']
 
 
-class DeliveryType:
-    def __init__(self, json):
-        self.id: int = json['id']
-        self.name: str = json['name']
-
-
-class TypeOfPizza:
-    def __init__(self, json):
-        self.id: int = json['id']
-        self.name: str = json['name']
+# class DeliveryType:
+#     def __init__(self, json):
+#         self.id: int = json['id']
+#         self.name: str = json['name']
+#
+#
+# class TypeOfPizza:
+#     def __init__(self, json):
+#         self.id: int = json['id']
+#         self.name: str = json['name']#
 
 
 class Consts:

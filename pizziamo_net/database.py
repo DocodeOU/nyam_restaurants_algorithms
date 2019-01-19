@@ -1,5 +1,5 @@
 from database import AbstractDatabase
-from models import Consts, Pizza, Drink, Dessert, Ingredient, PizzaOption, DeliveryType, TypeOfPizza
+from models import Consts, Pizza, Drink, Dessert, Ingredient, PizzaOption
 
 
 class DatabasePizziamoNet(AbstractDatabase):
@@ -14,8 +14,6 @@ class DatabasePizziamoNet(AbstractDatabase):
         desserts = [Dessert(json=x) for x in []]
         ingredients = [Ingredient(json=x) for x in []]
         pizza_options = [PizzaOption(json=x) for x in []]
-        delivery_types = [DeliveryType(json=x) for x in []]
-        types_of_pizzas = [TypeOfPizza(json=x) for x in []]
         
         super().__init__(consts=consts, pizzas=pizzas, drinks=drinks, desserts=desserts, ingredients=ingredients,
-                         pizza_options=pizza_options, delivery_types=delivery_types, types_of_pizzas=types_of_pizzas)
+                         pizza_options=pizza_options)
