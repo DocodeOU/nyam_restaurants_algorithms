@@ -2,8 +2,11 @@ from functools import reduce
 from typing import List
 
 from models import Pizza, Ingredient, PizzaOption
+from pizziamo_net.database import DatabasePizziamoNet
 
 COSTO_CONSEGNA = 0.5
+
+DATABASE = DatabasePizziamoNet()
 
 
 def _price_pizza_menu(pizza: Pizza, pizza_menu: Pizza) -> float:
@@ -19,16 +22,15 @@ def _price_pizza_menu(pizza: Pizza, pizza_menu: Pizza) -> float:
 
 
 def _price_pizza_not_in_menu(pizza: Pizza) -> float:
-    all_pizzas: List[Pizza] = Pizza.objects.all()
-    consts: Consts = Consts.objects.first()
-    ing_mozzarella = consts.ingredient_mozzarella
-    ing_pomodoro = consts.ingredient_pomodoro
+    all_pizzas = DATABASE.pizzas
+    ing_mozzarella = DATABASE.consts.ingredient_mozzarella
+    ing_pomodoro = DATABASE.consts.ingredient_pomodoro
     
     pizza_ingredients_ids = [x.id for x in pizza.ingredients]
     # Verifichiamo se è una schiaccitina non deve avere ne pomodoro ne mozzarella
     e_schiacciatina = all(x.id not in pizza_ingredients_ids for x in [ing_mozzarella, ing_pomodoro])
     # le schiacciatine, i calzoni e i ceci hanno dei prezzi di base scritti nel db
-    if e_schiacciatina or pizza.type != TypeOfPizza.objects.get(name='Pizza').id:
+    if e_schiacciatina or pizza.type != DATABASE.type_pizza.id:
         price_base = next(
             x for x in all_pizzas if x.type_id == pizza.type and len(x.ingredients) == 0).price
     else:
@@ -44,7 +46,7 @@ def _price_pizza_not_in_menu(pizza: Pizza) -> float:
 
 
 def price_pizza(pizza: Pizza) -> float:
-    all_pizzas: List[Pizza] = Pizza.objects.all()
+    all_pizzas = DATABASE.pizzas
     try:
         # cerchiamo se è presente nel menu
         pizza_trovata: Pizza = next(
@@ -73,9 +75,9 @@ def total_price_of_pizzas(pizzas_in_cart: List[Pizza], delivery_type: int) -> fl
     n_of_pizzas = reduce(_get_pizza_quantity, pizzas_in_cart, initial=0)
     
     # la consegna costa solo se a domicilio
-    if delivery_type == DeliveryType.objects.get(name='Domicilio'):
+    if delivery_type == DATABASE.delivery_type_home.id:
         n_of_ceci = reduce(_get_pizza_quantity,
-                           filter(lambda x: x.type == TypeOfPizza.objects.get(name='Cecio').id, pizzas_in_cart),
+                           filter(lambda x: x.type == DATABASE.type_cecio.id, pizzas_in_cart),
                            initial=0)
         # se sono tutti ceci
         if n_of_pizzas == n_of_ceci:
