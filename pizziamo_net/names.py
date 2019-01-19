@@ -1,6 +1,6 @@
 from typing import List
 
-from pizziamo_net.database import DatabasePizziamoNet
+from .database import DatabasePizziamoNet
 from ..models import Pizza, Ingredient
 
 
