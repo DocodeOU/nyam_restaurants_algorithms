@@ -1,4 +1,4 @@
-from ..database import AbstractDatabase
+from ..abstract_database import AbstractDatabase
 from ..models import Consts, Pizza, Drink, Dessert, Ingredient, PizzaOption
 
 
