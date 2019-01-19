@@ -31,8 +31,8 @@ class NamesPizziamoNet:
                 or x.cooked_in_oven_by_default != x.uscita  # se l uscita è cambiata da quella di base
                 or self._ingredient_was_not_in_da_pizza(ingredient=x, pizza=pizza_menu)]  # oppure se prima non c'era
     
-    def _find_similar_pizza(pizza: Pizza):
+    def _find_similar_pizza(self, pizza: Pizza):
         pass
     
-    def name_of_pizza(pizza: Pizza) -> str:
+    def name_of_pizza(self, pizza: Pizza) -> str:
         pass
