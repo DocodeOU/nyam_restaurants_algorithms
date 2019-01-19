@@ -30,9 +30,9 @@ class Pizza:
         self.type: int = json['type']
         self.quantity: int = json['quantity']
 
-        @property
-        def key_without_pizza_options(self):
-            return None
+    @property
+    def key_without_pizza_options(self):
+        return None
 
 
 class Drink:
