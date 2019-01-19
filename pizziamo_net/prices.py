@@ -1,7 +1,7 @@
 from functools import reduce
 from typing import List
 
-from abstract_prices import AbstractPrices
+from ..abstract_prices import AbstractPrices
 from .database import DatabasePizziamoNet
 from ..models import Pizza, Ingredient, PizzaOption
 
