@@ -1,13 +1,14 @@
 from functools import reduce
 from typing import List
 
+from abstract_prices import AbstractPrices
 from .database import DatabasePizziamoNet
 from ..models import Pizza, Ingredient, PizzaOption
 
 COSTO_CONSEGNA = 0.5
 
 
-class PricesPizziamoNet:
+class PricesPizziamoNet(AbstractPrices):
     def __init__(self, database: DatabasePizziamoNet):
         self.DATABASE = database
     

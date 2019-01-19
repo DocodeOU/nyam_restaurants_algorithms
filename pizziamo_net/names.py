@@ -1,10 +1,11 @@
 from typing import List
 
+from abstract_names import AbstractNames
 from .database import DatabasePizziamoNet
 from ..models import Pizza, Ingredient
 
 
-class NamesPizziamoNet:
+class NamesPizziamoNet(AbstractNames):
     def __init__(self, database: DatabasePizziamoNet):
         self.DATABASE = database
     
