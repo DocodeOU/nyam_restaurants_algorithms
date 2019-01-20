@@ -35,18 +35,18 @@ class Pizza:
         return None
 
 
-class Drink:
-    def __init__(self, json):
-        self.id: int = json['id']
-        self.name: str = json['name']
-        self.price: float = json['price']
-
-
-class Dessert:
-    def __init__(self, json):
-        self.id: int = json['id']
-        self.name: str = json['name']
-        self.price: float = json['price']
+# class Drink:
+#     def # __init__(self, json):
+#         self.id: int = json['id']
+#         self.name: str = json['name']
+#         self.price: float = json['price']
+#
+#
+# class Dessert:
+#     def __init__(self, json):
+#         self.id: int = json['id']
+#         self.name: str = json['name']
+#         self.price: float = json['price']
 
 
 # class DeliveryType:

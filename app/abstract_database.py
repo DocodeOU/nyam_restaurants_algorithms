@@ -1,15 +1,13 @@
 from typing import List
 
-from .models import Consts, Pizza, Drink, Dessert, Ingredient, PizzaOption
+from .models import Consts, Pizza, Ingredient, PizzaOption
 
 
 class AbstractDatabase:
-    def __init__(self, consts: Consts, pizzas: List[Pizza], drinks: List[Drink], desserts: List[Dessert],
-                 ingredients: List[Ingredient], pizza_options: List[PizzaOption]):
+    def __init__(self, consts: Consts, pizzas: List[Pizza], ingredients: List[Ingredient],
+                 pizza_options: List[PizzaOption]):
         self.consts = consts
         self.pizzas = pizzas
-        self.drinks = drinks
-        self.desserts = desserts
         self.ingredients = ingredients
         self.pizza_options = pizza_options
         
