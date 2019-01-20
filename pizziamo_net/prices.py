@@ -22,7 +22,7 @@ class PricesPizziamoNet(AbstractPrices):
         def _get_ingredient_price(acc: float, ing: Ingredient):
             return acc + ing.price * (ing.quantity - 1)
         
-        return reduce(_get_ingredient_price, pizza.ingredients, initial=pizza_menu.price)
+        return reduce(_get_ingredient_price, pizza.ingredients, pizza_menu.price)
     
     def _price_pizza_not_in_menu(self, pizza: Pizza) -> float:
         all_pizzas = self.DATABASE.pizzas
@@ -44,7 +44,7 @@ class PricesPizziamoNet(AbstractPrices):
         def _get_ingredient_price(acc: float, ing: Ingredient):
             return acc + ing.price * ing.quantity
         
-        price_with_ingredients = reduce(_get_ingredient_price, pizza.ingredients, initial=price_base)
+        price_with_ingredients = reduce(_get_ingredient_price, pizza.ingredients, price_base)
         return price_with_ingredients
     
     def price_pizza(self, pizza: Pizza) -> float:
@@ -61,7 +61,7 @@ class PricesPizziamoNet(AbstractPrices):
         def _get_pizza_option_price(acc: float, option: PizzaOption):
             return acc + option.price
         
-        price_with_option = reduce(_get_pizza_option_price, pizza.pizza_options, initial=price_without_options)
+        price_with_option = reduce(_get_pizza_option_price, pizza.pizza_options, price_without_options)
         return price_with_option
     
     def total_price_of_pizzas(self, pizzas_in_cart: List[Pizza], delivery_type: int) -> float:
@@ -71,15 +71,15 @@ class PricesPizziamoNet(AbstractPrices):
         def _get_pizza_quantity(acc: int, pizza: Pizza):
             return acc + pizza.quantity
         
-        price_of_pizzas = reduce(_get_pizza_price, pizzas_in_cart, initial=0)
+        price_of_pizzas = reduce(_get_pizza_price, pizzas_in_cart, 0)
         price_of_delivery = 0
-        n_of_pizzas = reduce(_get_pizza_quantity, pizzas_in_cart, initial=0)
+        n_of_pizzas = reduce(_get_pizza_quantity, pizzas_in_cart, 0)
         
         # la consegna costa solo se a domicilio
         if delivery_type == self.DATABASE.delivery_type_home.id:
             n_of_ceci = reduce(_get_pizza_quantity,
                                filter(lambda x: x.type == self.DATABASE.type_cecio.id, pizzas_in_cart),
-                               initial=0)
+                               0)
             # se sono tutti ceci
             if n_of_pizzas == n_of_ceci:
                 # la loro consegna costa

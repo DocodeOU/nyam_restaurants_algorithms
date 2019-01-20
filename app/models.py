@@ -21,7 +21,7 @@ class PizzaOption:
 
 class Pizza:
     def __init__(self, json):
-        self.id: int = json['id']
+        self.id: int = json['id'] if 'id' in json else None
         self.name: str = json['name']
         self.price: float = json['price']
         self.ingredients: List[Ingredient] = [Ingredient(json=x) for x in json['ingredients']]
