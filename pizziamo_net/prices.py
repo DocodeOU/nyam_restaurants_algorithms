@@ -1,9 +1,9 @@
 from functools import reduce
 from typing import List
 
-from ..abstract_prices import AbstractPrices
+from app.abstract_prices import AbstractPrices
 from .database import DatabasePizziamoNet
-from ..models import Pizza, Ingredient, PizzaOption
+from app.models import Pizza, Ingredient, PizzaOption
 
 COSTO_CONSEGNA = 0.5
 

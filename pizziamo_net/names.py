@@ -1,8 +1,8 @@
 from typing import List
 
-from ..abstract_names import AbstractNames
+from app.abstract_names import AbstractNames
 from .database import DatabasePizziamoNet
-from ..models import Pizza, Ingredient
+from app.models import Pizza, Ingredient
 
 
 class NamesPizziamoNet(AbstractNames):
