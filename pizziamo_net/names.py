@@ -1,8 +1,8 @@
 from typing import List
 
-from app.abstract_names import AbstractNames
+from nyam_restaurants_algorithms.app.abstract_names import AbstractNames
 from .database import DatabasePizziamoNet
-from app.models import Pizza, Ingredient
+from nyam_restaurants_algorithms.app.models import Pizza, Ingredient
 
 
 class NamesPizziamoNet(AbstractNames):
