@@ -18,14 +18,14 @@ def main(argv):
             if pizzeria == 'docode.it':
                 print(time.time() - start_time)
             elif pizzeria == 'pizziamo.net':
-                from pizziamo_net.database import DatabasePizziamoNet
+                from .pizziamo_net.database import DatabasePizziamoNet
                 database = DatabasePizziamoNet(json={})
                 if operation == 'pizza_name':
-                    from pizziamo_net.names import NamesPizziamoNet
+                    from .pizziamo_net.names import NamesPizziamoNet
                     names_algs = NamesPizziamoNet(database=database)
                     print('Margherita')
                 elif operation == 'pizza_price':
-                    from pizziamo_net.prices import PricesPizziamoNet
+                    from .pizziamo_net.prices import PricesPizziamoNet
                     prices_algs = PricesPizziamoNet(database=database)
                     print('3.0')
 
