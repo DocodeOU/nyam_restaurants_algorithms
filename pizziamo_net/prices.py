@@ -52,7 +52,7 @@ class PricesPizziamoNet(AbstractPrices):
         try:
             # cerchiamo se è presente nel menu
             pizza_trovata: Pizza = next(
-                x for x in all_pizzas if pizza.key_without_pizza_options == x.generate_key_without_options())
+                x for x in all_pizzas if pizza.key_without_pizza_options == x.key_without_pizza_options)
             price_without_options = self._price_pizza_menu(pizza=pizza, pizza_menu=pizza_trovata)
         except StopIteration:
             # pizza non trovata
