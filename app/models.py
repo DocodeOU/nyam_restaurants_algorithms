@@ -25,7 +25,7 @@ class Pizza:
         self.name: str = json['name']
         self.price: float = json['price']
         self.ingredients: List[Ingredient] = [Ingredient(json=x) for x in json['ingredients']]
-        self.pizza_options: List[PizzaOption] = [PizzaOption(json=x) for x in json['pizza_options']]
+        self.pizza_options: List[PizzaOption] = [PizzaOption(json=x) for x in json['pizza_options']] if 'pizza_options' in json else []
         self.type: int = json['type']
         self.quantity: int = json['quantity'] if 'quantity' in json else 1
     
