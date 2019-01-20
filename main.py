@@ -19,7 +19,7 @@ def main(argv):
                 print(time.time() - start_time)
             elif pizzeria == 'pizziamo.net':
                 from nyam_restaurants_algorithms.pizziamo_net.database import DatabasePizziamoNet
-                database = DatabasePizziamoNet(json={})
+                database = DatabasePizziamoNet(json=app_data)
                 if operation == 'pizza_name':
                     from nyam_restaurants_algorithms.pizziamo_net.names import NamesPizziamoNet
                     names_algs = NamesPizziamoNet(database=database)
