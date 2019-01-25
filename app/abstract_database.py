@@ -1,5 +1,3 @@
-from typing import List
-
 from .models import Consts, Pizza, Ingredient, PizzaOption
 
 

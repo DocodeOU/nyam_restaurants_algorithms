@@ -2,8 +2,8 @@ from functools import reduce
 from typing import List
 
 from nyam_restaurants_algorithms.app.abstract_prices import AbstractPrices
-from .database import DatabasePizziamoNet
 from nyam_restaurants_algorithms.app.models import Pizza, Ingredient, PizzaOption
+from .database import DatabasePizziamoNet
 
 COSTO_CONSEGNA = 0.5
 
@@ -13,16 +13,16 @@ class PricesPizziamoNet(AbstractPrices):
         self.DATABASE = database
     
     @staticmethod
-    def _price_pizza_menu(pizza: Pizza, pizza_menu: Pizza) -> float:
+    def _reduce_ingredient_price(acc: float, ing: Ingredient):
+        return acc + ing.price * (ing.quantity - 1)
+    
+    def _price_pizza_menu(self, pizza: Pizza, pizza_menu: Pizza) -> float:
         """
         Prezzo di una pizza che ha gli ingredienti di una pizza del menu
         Si parte dal prezzo del menu e si aggiunge il prezzo degli ingredienti in piu
         """
         
-        def _get_ingredient_price(acc: float, ing: Ingredient):
-            return acc + ing.price * (ing.quantity - 1)
-        
-        return reduce(_get_ingredient_price, pizza.ingredients, pizza_menu.price)
+        return reduce(self._reduce_ingredient_price, pizza.ingredients, pizza_menu.price)
     
     def _price_pizza_not_in_menu(self, pizza: Pizza) -> float:
         all_pizzas = self.DATABASE.pizzas
@@ -41,17 +41,15 @@ class PricesPizziamoNet(AbstractPrices):
             price_base = 4
         
         # aggiungiamo il prezzo degli ingredienti
-        def _get_ingredient_price(acc: float, ing: Ingredient):
-            return acc + ing.price * ing.quantity
-        
-        price_with_ingredients = reduce(_get_ingredient_price, pizza.ingredients, price_base)
+        price_with_ingredients = reduce(self._reduce_ingredient_price, pizza.ingredients, price_base)
         return price_with_ingredients
     
     def price_pizza(self, pizza: Pizza) -> float:
         all_pizzas = self.DATABASE.pizzas
         try:
             # cerchiamo se è presente nel menu
-            pizza_trovata: Pizza = next(
+            # TODO key_without_pizza_options non e buona
+            pizza_trovata = next(
                 x for x in all_pizzas if pizza.key_without_pizza_options == x.key_without_pizza_options)
             price_without_options = self._price_pizza_menu(pizza=pizza, pizza_menu=pizza_trovata)
         except StopIteration:
@@ -64,22 +62,18 @@ class PricesPizziamoNet(AbstractPrices):
         price_with_option = reduce(_get_pizza_option_price, pizza.pizza_options, price_without_options)
         return price_with_option
     
-    def total_price_of_pizzas(self, pizzas_in_cart: List[Pizza], delivery_type: int) -> float:
-        def _get_pizza_price(acc: float, pizza: Pizza):
-            return acc + pizza.price
+    def delivery_cost(self, pizzas_in_cart: List[Pizza], delivery_type: int) -> float:
         
-        def _get_pizza_quantity(acc: int, pizza: Pizza):
+        def _reduce_pizza_quantity(acc: int, pizza: Pizza):
             return acc + pizza.quantity
         
-        price_of_pizzas = reduce(_get_pizza_price, pizzas_in_cart, 0)
         price_of_delivery = 0
-        n_of_pizzas = reduce(_get_pizza_quantity, pizzas_in_cart, 0)
+        n_of_pizzas = reduce(_reduce_pizza_quantity, pizzas_in_cart, 0)
         
         # la consegna costa solo se a domicilio
-        if delivery_type == self.DATABASE.delivery_type_home.id:
-            n_of_ceci = reduce(_get_pizza_quantity,
-                               filter(lambda x: x.type == self.DATABASE.type_cecio.id, pizzas_in_cart),
-                               0)
+        if delivery_type == self.DATABASE.delivery_type_home:
+            n_of_ceci = reduce(_reduce_pizza_quantity,
+                               [pizza for pizza in pizzas_in_cart if pizza.type == self.DATABASE.type_cecio], 0)
             # se sono tutti ceci
             if n_of_pizzas == n_of_ceci:
                 # la loro consegna costa
@@ -88,4 +82,4 @@ class PricesPizziamoNet(AbstractPrices):
                 # altrimenti la loro consegna non costa
                 price_of_delivery = (n_of_pizzas - n_of_ceci) * COSTO_CONSEGNA
         
-        return price_of_pizzas + price_of_delivery
+        return price_of_delivery
