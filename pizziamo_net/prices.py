@@ -9,8 +9,9 @@ COSTO_CONSEGNA = 0.5
 
 
 class PricesPizziamoNet(AbstractPrices):
-    def __init__(self, database: DatabasePizziamoNet):
+    def __init__(self, database: DatabasePizziamoNet, use_business_software_algs: bool):
         self.DATABASE = database
+        self.use_business_software_algs = use_business_software_algs
     
     @staticmethod
     def _reduce_ingredient_price(acc: float, ing: Ingredient):

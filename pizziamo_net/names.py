@@ -8,8 +8,9 @@ from .database import DatabasePizziamoNet
 
 
 class NamesPizziamoNet(AbstractNames):
-    def __init__(self, database: DatabasePizziamoNet):
+    def __init__(self, database: DatabasePizziamoNet, use_business_software_algs: bool):
         self.DATABASE = database
+        self.use_business_software_algs = use_business_software_algs
     
     @staticmethod
     def _name_with_pizza_options(pizza: Pizza, initial_name: str) -> str:
