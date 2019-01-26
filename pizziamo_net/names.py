@@ -1,9 +1,8 @@
 import re
-from functools import reduce
 from typing import List
 
 from nyam_restaurants_algorithms.app.abstract_names import AbstractNames
-from nyam_restaurants_algorithms.app.models import Pizza, Ingredient, PizzaOption
+from nyam_restaurants_algorithms.app.models import Pizza, Ingredient
 from .database import DatabasePizziamoNet
 
 
@@ -14,13 +13,13 @@ class NamesPizziamoNet(AbstractNames):
     
     @staticmethod
     def _name_with_pizza_options(pizza: Pizza, initial_name: str) -> str:
-        
-        def _reduce_pizza_option(acc: str, pizza_option: PizzaOption):
-            return f'{pizza_option.name} {acc}' if pizza_option.place_at_beggining_of_name else f'{acc} {pizza_option.name}'
-        
         sorted_pizza_options = pizza.pizza_options
         sorted_pizza_options.sort(key=lambda x: x.name)
-        return reduce(_reduce_pizza_option, pizza.pizza_options, initial_name)
+        name = initial_name
+        for pizza_option in sorted_pizza_options:
+            name = f'{pizza_option.name} {name}' \
+                if pizza_option.place_at_beggining_of_name else f'{name} {pizza_option.name}'
+        return name
     
     def _name_of_missing_ingredient(self, current_name: str, ingredient: Ingredient,
                                     now_it_has_pomodoro: bool,

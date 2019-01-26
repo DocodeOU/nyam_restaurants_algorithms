@@ -2,7 +2,7 @@ from functools import reduce
 from typing import List
 
 from nyam_restaurants_algorithms.app.abstract_prices import AbstractPrices
-from nyam_restaurants_algorithms.app.models import Pizza, Ingredient, PizzaOption
+from nyam_restaurants_algorithms.app.models import Pizza
 from .database import DatabasePizziamoNet
 
 COSTO_CONSEGNA = 0.5
@@ -14,16 +14,15 @@ class PricesPizziamoNet(AbstractPrices):
         self.use_business_software_algs = use_business_software_algs
     
     @staticmethod
-    def _reduce_ingredient_price(acc: float, ing: Ingredient):
-        return acc + ing.price * (ing.quantity - 1)
-    
-    def _price_pizza_menu(self, pizza: Pizza, pizza_menu: Pizza) -> float:
+    def _price_pizza_menu(pizza: Pizza, pizza_menu: Pizza) -> float:
         """
         Prezzo di una pizza che ha gli ingredienti di una pizza del menu
         Si parte dal prezzo del menu e si aggiunge il prezzo degli ingredienti in piu
         """
-        
-        return reduce(self._reduce_ingredient_price, pizza.ingredients, pizza_menu.price)
+        price_with_ingredients = pizza_menu.price
+        for ing in pizza.ingredients:
+            price_with_ingredients += ing.price * (ing.quantity - 1)
+        return price_with_ingredients
     
     def _price_pizza_not_in_menu(self, pizza: Pizza) -> float:
         all_pizzas = self.DATABASE.pizzas
@@ -32,9 +31,9 @@ class PricesPizziamoNet(AbstractPrices):
         
         pizza_ingredients_ids = [x.id for x in pizza.ingredients]
         # Verifichiamo se è una schiaccitina non deve avere ne pomodoro ne mozzarella
-        e_schiacciatina = all(x.id not in pizza_ingredients_ids for x in [ing_mozzarella, ing_pomodoro])
+        e_schiacciatina = all(x not in pizza_ingredients_ids for x in [ing_mozzarella, ing_pomodoro])
         # le schiacciatine, i calzoni e i ceci hanno dei prezzi di base scritti nel db
-        if e_schiacciatina or pizza.type != self.DATABASE.type_pizza.id:
+        if e_schiacciatina or pizza.type != self.DATABASE.type_pizza:
             price_base = next(
                 x for x in all_pizzas if x.type_id == pizza.type and len(x.ingredients) == 0).price
         else:
@@ -42,14 +41,15 @@ class PricesPizziamoNet(AbstractPrices):
             price_base = 4
         
         # aggiungiamo il prezzo degli ingredienti
-        price_with_ingredients = reduce(self._reduce_ingredient_price, pizza.ingredients, price_base)
+        price_with_ingredients = price_base
+        for ing in pizza.ingredients:
+            price_with_ingredients += ing.price * ing.quantity
         return price_with_ingredients
     
     def price_pizza(self, pizza: Pizza) -> float:
         all_pizzas = self.DATABASE.pizzas
         try:
             # cerchiamo se è presente nel menu
-            # TODO key_without_pizza_options non e buona
             pizza_trovata = next(
                 x for x in all_pizzas if pizza.key_without_pizza_options == x.key_without_pizza_options)
             price_without_options = self._price_pizza_menu(pizza=pizza, pizza_menu=pizza_trovata)
@@ -57,15 +57,14 @@ class PricesPizziamoNet(AbstractPrices):
             # pizza non trovata
             price_without_options = self._price_pizza_not_in_menu(pizza=pizza)
         
-        def _get_pizza_option_price(acc: float, option: PizzaOption):
-            return acc + option.price
-        
-        price_with_option = reduce(_get_pizza_option_price, pizza.pizza_options, price_without_options)
+        price_with_option = price_without_options
+        for pizza_option in pizza.pizza_options:
+            price_with_option += pizza_option.price
         return price_with_option
     
     def delivery_cost(self, pizzas_in_cart: List[Pizza], delivery_type: int) -> float:
         
-        def _reduce_pizza_quantity(acc: int, pizza: Pizza):
+        def _reduce_pizza_quantity(acc: int, pizza: Pizza) -> int:
             return acc + pizza.quantity
         
         price_of_delivery = 0

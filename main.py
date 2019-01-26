@@ -1,6 +1,8 @@
+import json
 import sys
 import time
-import json
+
+from nyam_restaurants_algorithms.app.models import Pizza
 
 
 def main(argv):
@@ -14,7 +16,8 @@ def main(argv):
             app_data = json.load(d)
             pizzeria = order_data['pizzeria']
             operation = order_data['operation']
-
+            pizza = Pizza(json={})
+            
             if pizzeria == 'docode.it':
                 print(time.time() - start_time)
             elif pizzeria == 'pizziamo.net':
@@ -22,12 +25,12 @@ def main(argv):
                 database = DatabasePizziamoNet(json=app_data)
                 if operation == 'pizza_name':
                     from nyam_restaurants_algorithms.pizziamo_net.names import NamesPizziamoNet
-                    names_algs = NamesPizziamoNet(database=database)
-                    print('Margherita')
+                    names_algs = NamesPizziamoNet(database=database, use_business_software_algs=True)
+                    print(names_algs.name_of_pizza(pizza=pizza))
                 elif operation == 'pizza_price':
                     from nyam_restaurants_algorithms.pizziamo_net.prices import PricesPizziamoNet
-                    prices_algs = PricesPizziamoNet(database=database)
-                    print('3.0')
+                    prices_algs = PricesPizziamoNet(database=database, use_business_software_algs=True)
+                    print(prices_algs.price_pizza(pizza=pizza))
 
 
 if __name__ == "__main__":

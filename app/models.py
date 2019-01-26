@@ -37,8 +37,34 @@ class Pizza:
             'show_removed_toppings_in_name'] if 'show_removed_toppings_in_name' in json else False
     
     @property
-    def key_without_pizza_options(self):
-        return None
+    def key_without_pizza_options(self) -> str:
+        """
+        utile per trovare se uno pizza e del menu
+        escluso il fatto che possa avere le pizza option diverse
+        """
+        ingredients_copied = self.ingredients.copy()
+        ingredients_copied.sort(key=lambda x: x.id)
+        # aggiungiamo alla key la stringa degli ingredients
+        key = ''
+        for ing in ingredients_copied:
+            if ing.quantity > 0:
+                key = f'{key}{ing.id}x{ing.quantity}-{ing.just_a_little}-{ing.uscita}-'
+        key += str(self.type)
+        return key
+    
+    @property
+    def key(self) -> str:
+        """
+        genera una key univoca che identifica la pizza che ha certe opzioni, certi ingredienti
+        """
+        # aggiungiamo alla key le info su come deve essere la pizza
+        # ortiamo perchè se no una pizza alta bencotta e la stessa pizza bencotta alta risultano diverse
+        pizza_options_copied = self.pizza_options.copy()
+        pizza_options_copied.sort(key=lambda x: x.name)
+        key_pizza_option = ''
+        for pizza_option in pizza_options_copied:
+            key_pizza_option = f'{key_pizza_option}{pizza_option.name}'
+        return f'{self.key_without_pizza_options}-{key_pizza_option}'
 
 
 # class Drink:
