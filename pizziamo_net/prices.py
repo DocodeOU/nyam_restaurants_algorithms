@@ -73,7 +73,7 @@ class PricesPizziamoNet(AbstractPrices):
         # la consegna costa solo se a domicilio
         if delivery_type == self.DATABASE.delivery_type_home:
             n_of_ceci = reduce(_reduce_pizza_quantity,
-                               [x for x in pizzas_in_cart if x.pizza.type == self.DATABASE.type_cecio], 0)
+                               [x for x in pizzas_in_cart if x.type == self.DATABASE.type_cecio], 0)
             # se sono tutti ceci
             if n_of_pizzas == n_of_ceci:
                 # la loro consegna costa
