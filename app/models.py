@@ -32,7 +32,6 @@ class Pizza:
         self.pizza_options: List[PizzaOption] = [PizzaOption(json=x) for x in
                                                  json['pizza_options']] if 'pizza_options' in json else []
         self.type: int = json['type']
-        self.quantity: int = json['quantity'] if 'quantity' in json else 1
         self.show_removed_toppings_in_name: bool = json[
             'show_removed_toppings_in_name'] if 'show_removed_toppings_in_name' in json else False
         self.name_business_software: str = json[
@@ -68,7 +67,11 @@ class Pizza:
             key_pizza_option = f'{key_pizza_option}{pizza_option.name}'
         return f'{self.key_without_pizza_options}-{key_pizza_option}'
 
-
+class CartItemPizza:
+    def __init__(self, pizza: Pizza, quantity: int):
+        self.pizza = pizza
+        self.quantity = quantity
+        
 # class Drink:
 #     def # __init__(self, json):
 #         self.id: int = json['id']

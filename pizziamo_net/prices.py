@@ -2,7 +2,7 @@ from functools import reduce
 from typing import List
 
 from nyam_restaurants_algorithms.app.abstract_prices import AbstractPrices
-from nyam_restaurants_algorithms.app.models import Pizza
+from nyam_restaurants_algorithms.app.models import Pizza, CartItemPizza
 from .database import DatabasePizziamoNet
 
 COSTO_CONSEGNA = 0.5
@@ -62,9 +62,9 @@ class PricesPizziamoNet(AbstractPrices):
             price_with_option += pizza_option.price
         return price_with_option
     
-    def delivery_cost(self, pizzas_in_cart: List[Pizza], delivery_type: int) -> float:
+    def delivery_cost(self, pizzas_in_cart: List[CartItemPizza], delivery_type: int) -> float:
         
-        def _reduce_pizza_quantity(acc: int, pizza: Pizza) -> int:
+        def _reduce_pizza_quantity(acc: int, pizza: CartItemPizza) -> int:
             return acc + pizza.quantity
         
         price_of_delivery = 0
@@ -73,7 +73,7 @@ class PricesPizziamoNet(AbstractPrices):
         # la consegna costa solo se a domicilio
         if delivery_type == self.DATABASE.delivery_type_home:
             n_of_ceci = reduce(_reduce_pizza_quantity,
-                               [pizza for pizza in pizzas_in_cart if pizza.type == self.DATABASE.type_cecio], 0)
+                               [x for x in pizzas_in_cart if x.pizza.type == self.DATABASE.type_cecio], 0)
             # se sono tutti ceci
             if n_of_pizzas == n_of_ceci:
                 # la loro consegna costa
