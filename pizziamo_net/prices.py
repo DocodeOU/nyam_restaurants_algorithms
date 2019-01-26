@@ -67,7 +67,7 @@ class PricesPizziamoNet(AbstractPrices):
         def _reduce_pizza_quantity(acc: int, pizza: CartItemPizza) -> int:
             return acc + pizza.quantity
         
-        price_of_delivery = 0
+        price_of_delivery = 0.0
         n_of_pizzas = reduce(_reduce_pizza_quantity, pizzas_in_cart, 0)
         
         # la consegna costa solo se a domicilio
