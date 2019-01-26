@@ -11,7 +11,7 @@ class Ingredient:
         self.uscita: bool = json['uscita'] if 'uscita' in json else not self.cooked_in_oven_by_default
         self.just_a_little: bool = json['just_a_little'] if 'just_a_little' in json else False
         self.name_business_software_shortened: bool = json[
-            'name_business_software_shortened'] if 'name_business_software_shortened' in json else ''
+            'name_business_software_shortened'] if 'name_business_software_shortened' in json else None
 
 
 class PizzaOption:
@@ -35,6 +35,8 @@ class Pizza:
         self.quantity: int = json['quantity'] if 'quantity' in json else 1
         self.show_removed_toppings_in_name: bool = json[
             'show_removed_toppings_in_name'] if 'show_removed_toppings_in_name' in json else False
+        self.name_business_software: str = json[
+            'name_business_software'] if 'name_business_software' in json else None
     
     @property
     def key_without_pizza_options(self) -> str:

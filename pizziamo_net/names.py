@@ -29,11 +29,15 @@ class NamesPizziamoNet(AbstractNames):
         elif ingredient.id == self.DATABASE.consts.ingredient_pomodoro and now_it_has_mozzarella:
             return f'BIANCA {current_name}'
         else:
-            return f'{current_name} - {ingredient.name}'
+            ing_name = ingredient.name_business_software_shortened \
+                if self.use_business_software_algs and ingredient.name_business_software_shortened \
+                else ingredient.name
+            return f'{current_name} - {ing_name}'
     
     def _name_of_pizza_ingredient(self, ingredient: Ingredient, pizza_menu: Pizza) -> str:
         just_name = ingredient.name_business_software_shortened \
-            if ingredient.name_business_software_shortened else ingredient.name
+            if self.use_business_software_algs and ingredient.name_business_software_shortened \
+            else ingredient.name
         if ingredient.cooked_in_oven_by_default and ingredient.uscita:
             # se in origine era all'entrata e ora è all'uscita
             just_name = f'{just_name} Usc.'
@@ -105,7 +109,9 @@ class NamesPizziamoNet(AbstractNames):
             pizza.type = original_pizza.type
             # usiamo come pizza di partenza quella che contiene il maggior numero di ingredienti
             pizza_menu = self._find_similar_pizza(pizza=pizza)
-        name = pizza_menu.name
+        name = pizza_menu.name_business_software \
+            if self.use_business_software_algs and pizza_menu.name_business_software \
+            else pizza_menu.name
         # Verifichiamo se sono stati tolti degli ingredienti dalla pizza originale
         # diamo il nome agli ingredienti tolti
         missing_ingredients = self._find_missing_ingredients(pizza=pizza, pizza_menu=pizza_menu)
