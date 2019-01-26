@@ -67,11 +67,13 @@ class Pizza:
             key_pizza_option = f'{key_pizza_option}{pizza_option.name}'
         return f'{self.key_without_pizza_options}-{key_pizza_option}'
 
-class CartItemPizza:
-    def __init__(self, pizza: Pizza, quantity: int):
-        self.pizza = pizza
-        self.quantity = quantity
-        
+
+class CartItemPizza(Pizza):
+    def __init__(self, json: dict):
+        super(CartItemPizza, self).__init__(json=json)
+        self.quantity: int = json['quantity']
+
+
 # class Drink:
 #     def # __init__(self, json):
 #         self.id: int = json['id']
