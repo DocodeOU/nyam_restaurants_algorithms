@@ -35,7 +35,7 @@ class PricesPizziamoNet(AbstractPrices):
         # le schiacciatine, i calzoni e i ceci hanno dei prezzi di base scritti nel db
         if e_schiacciatina or pizza.type != self.DATABASE.type_pizza:
             price_base = next(
-                x for x in all_pizzas if x.type_id == pizza.type and len(x.ingredients) == 0).price
+                x for x in all_pizzas if x.type == pizza.type and len(x.ingredients) == 0).price
         else:
             # prezzo base per la pizza
             price_base = 4
