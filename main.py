@@ -16,21 +16,20 @@ def main(argv):
             app_data = json.load(d)
             pizzeria = order_data['pizzeria']
             operation = order_data['operation']
-            pizza = Pizza(json={})
+            pizza = Pizza(json=order_data['data'])
             
             if pizzeria == 'docode.it':
                 print(time.time() - start_time)
             elif pizzeria == 'pizziamo.net':
                 from nyam_restaurants_algorithms.pizziamo_net.database import DatabasePizziamoNet
+                from nyam_restaurants_algorithms.pizziamo_net.names import NamesPizziamoNet
+                from nyam_restaurants_algorithms.pizziamo_net.prices import PricesPizziamoNet
                 database = DatabasePizziamoNet(json=app_data)
-                if operation == 'pizza_name':
-                    from nyam_restaurants_algorithms.pizziamo_net.names import NamesPizziamoNet
-                    names_algs = NamesPizziamoNet(database=database, use_business_software_algs=True)
-                    print(names_algs.name_of_pizza(pizza=pizza))
-                elif operation == 'pizza_price':
-                    from nyam_restaurants_algorithms.pizziamo_net.prices import PricesPizziamoNet
-                    prices_algs = PricesPizziamoNet(database=database, use_business_software_algs=True)
-                    print(prices_algs.price_pizza(pizza=pizza))
+                names_algs = NamesPizziamoNet(database=database, use_business_software_algs=True)
+                name = (names_algs.name_of_pizza(pizza=pizza))
+                prices_algs = PricesPizziamoNet(database=database, use_business_software_algs=True)
+                price = prices_algs.price_pizza(pizza=pizza)
+                print(json.dumps({'name': name, 'price': price}))
 
 
 if __name__ == "__main__":
