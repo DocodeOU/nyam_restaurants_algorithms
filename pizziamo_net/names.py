@@ -48,7 +48,7 @@ class NamesPizziamoNet(AbstractNames):
         quantity_to_write = ingredient.quantity if its_a_new_ingredient else ingredient.quantity - 1
         # se ne vogliamo solo un po
         if ingredient.just_a_little:
-            return f' (Poco {ingredient.name})'
+            return f' (Poco {just_name})'
         elif quantity_to_write > 1:
             # se bisogna esprimere la quantita
             return f' + {quantity_to_write} {just_name}'
