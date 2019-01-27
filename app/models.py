@@ -8,7 +8,7 @@ class Ingredient:
         self.price: float = json['price']
         self.quantity: int = json['quantity'] if 'quantity' in json else 1
         self.cooked_in_oven_by_default: bool = json['cooked_in_oven_by_default']
-        self.uscita: bool = json['uscita'] if 'uscita' in json else not self.cooked_in_oven_by_default
+        self.cooked_out: bool = json['cooked_out'] if 'cooked_out' in json else not self.cooked_in_oven_by_default
         self.just_a_little: bool = json['just_a_little'] if 'just_a_little' in json else False
         self.name_business_software_shortened: bool = json[
             'name_business_software_shortened'] if 'name_business_software_shortened' in json else None
@@ -49,7 +49,7 @@ class Pizza:
         key = ''
         for ing in ingredients_copied:
             if ing.quantity > 0:
-                key = f'{key}{ing.id}x{ing.quantity}-{ing.just_a_little}-{ing.uscita}-'
+                key = f'{key}{ing.id}x{ing.quantity}-{ing.just_a_little}-{ing.cooked_out}-'
         key += str(self.type)
         return key
     
