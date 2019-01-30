@@ -3,8 +3,8 @@ from flask_cors import CORS, cross_origin
 import json
 
 from ..pizziamo_net.database import DatabasePizziamoNet
-from pizziamo_net.names import NamesPizziamoNet
-from pizziamo_net.prices import PricesPizziamoNet
+from ..pizziamo_net.names import NamesPizziamoNet
+from ..pizziamo_net.prices import PricesPizziamoNet
 
 app = Flask(__name__)
 cors = CORS(app)
