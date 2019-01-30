@@ -1,10 +1,15 @@
+import json
+import sys
+
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
-import json
 
-from ..pizziamo_net.database import DatabasePizziamoNet
-from ..pizziamo_net.names import NamesPizziamoNet
-from ..pizziamo_net.prices import PricesPizziamoNet
+# https://stackoverflow.com/questions/30669474/beyond-top-level-package-error-in-relative-import
+sys.path.append("..")
+
+from nyam_restaurants_algorithms.pizziamo_net.database import DatabasePizziamoNet
+from nyam_restaurants_algorithms.pizziamo_net.names import NamesPizziamoNet
+from nyam_restaurants_algorithms.pizziamo_net.prices import PricesPizziamoNet
 
 app = Flask(__name__)
 cors = CORS(app)
