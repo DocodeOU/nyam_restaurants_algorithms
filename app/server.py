@@ -2,6 +2,10 @@ from flask import Flask, request
 from flask_cors import CORS, cross_origin
 import json
 
+from ..pizziamo_net.database import DatabasePizziamoNet
+from pizziamo_net.names import NamesPizziamoNet
+from pizziamo_net.prices import PricesPizziamoNet
+
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -22,9 +26,7 @@ def getPizzaNamePrice():
         name = 'ciao'
         price = 2
     elif pizzeria == 'pizziamo.net':
-        from .pizziamo_net.database import DatabasePizziamoNet
-        from .pizziamo_net.names import NamesPizziamoNet
-        from .pizziamo_net.prices import PricesPizziamoNet
+
         database = DatabasePizziamoNet(json=menu)
         names_algs = NamesPizziamoNet(database=database, use_business_software_algs=True)
         name = (names_algs.name_of_pizza(pizza=pizza))
