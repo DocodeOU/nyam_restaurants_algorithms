@@ -130,5 +130,5 @@ class NamesPizziamoNet(AbstractNames):
         # aggiungo altre caratteristiche come Integrale, Morbida ecc...
         name = self._name_with_pizza_options(pizza=pizza, initial_name=name)
         # e rimuovo gli spazi di troppo
-        name = re.sub(' +', ' ', name)
+        name = re.sub(' +', ' ', name).strip()
         return name
