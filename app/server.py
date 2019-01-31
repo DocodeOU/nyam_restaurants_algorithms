@@ -27,6 +27,7 @@ def pizza_name_and_price():
     if pizzeria == 'docode.it':
         name = 'ciao'
         price = 2
+        name_formatted = None
         
     elif pizzeria == 'pizziamo.net':
         database = DatabasePizziamoNet(json=menu)
