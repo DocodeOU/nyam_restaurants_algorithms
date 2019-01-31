@@ -132,3 +132,34 @@ class NamesPizziamoNet(AbstractNames):
         # e rimuovo gli spazi di troppo
         name = re.sub(' +', ' ', name).strip()
         return name
+
+    @staticmethod
+    def name_formatted(pizza: Pizza, current_name: str):
+        new_name = current_name
+        ingredients_cooked_out = [x for x in pizza.ingredients if x.cooked_out]
+        has_cooked_in_oven_ingredients_in_name = len([x for x in pizza.ingredients if not x.cooked_out and x.name in current_name]) > 0
+        has_cooked_out_ingredients = len(ingredients_cooked_out) > 0
+        # se nel nome non ci sono ingredienti che poi sono all entrata
+        if not has_cooked_in_oven_ingredients_in_name and has_cooked_out_ingredients:
+            # sottilineamo tutto il nome
+            new_name = f'<u>{current_name}</u>'
+        elif not has_cooked_out_ingredients:
+            # altrimenti sottilineamo gli ingredienti all uscita
+            for ing in ingredients_cooked_out:
+                new_name = new_name.replace(ing.name, f'<u>{ing.name}</u>')
+        return new_name
+    """
+    export const nomeFormattato = (pizza: Pizza) => {
+    let nome = pizza.name
+    const ingredientiUscita = pizza.ingredients.filter(ing => ing.cookedOut)
+    const haIngredientiAllEntrataNelNome = pizza.ingredients.filter(ing => !ing.cookedOut && pizza.name.includes(ing.name)).length > 0
+    const haIngredientiAllUscita = ingredientiUscita.length > 0
+    // se nel nome non ci sono ingredienti che poi sono all entrata
+    if (!haIngredientiAllEntrataNelNome && haIngredientiAllUscita)
+        // sottilineamo tutto il nome
+        nome = `<u>${nome}</u>`
+    else if (haIngredientiAllUscita)
+        // altrimenti sottilineamo gli ingredienti all uscita
+        ingredientiUscita.forEach(ingrediente => (nome = nome.replace(new RegExp(ingrediente.name, 'g'), `<u>${ingrediente.name}</u>`)))
+    return nome
+}"""
