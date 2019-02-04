@@ -74,18 +74,30 @@ class CartItemPizza(Pizza):
         self.quantity: int = json['quantity']
 
 
-# class Drink:
-#     def # __init__(self, json):
-#         self.id: int = json['id']
-#         self.name: str = json['name']
-#         self.price: float = json['price']
-#
-#
-# class Dessert:
-#     def __init__(self, json):
-#         self.id: int = json['id']
-#         self.name: str = json['name']
-#         self.price: float = json['price']
+class Drink:
+    def __init__(self, json):
+        self.id: int = json['id']
+        self.name: str = json['name']
+        self.price: float = json['price']
+
+
+class CartItemDrink(Drink):
+    def __init__(self, json: dict):
+        super(CartItemDrink, self).__init__(json=json)
+        self.quantity: int = json['quantity']
+
+
+class Dessert:
+    def __init__(self, json):
+        self.id: int = json['id']
+        self.name: str = json['name']
+        self.price: float = json['price']
+
+
+class CartItemDessert(Dessert):
+    def __init__(self, json: dict):
+        super(CartItemDessert, self).__init__(json=json)
+        self.quantity: int = json['quantity']
 
 
 class DeliveryType:
