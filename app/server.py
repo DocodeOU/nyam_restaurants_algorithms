@@ -7,7 +7,7 @@ from flask_cors import CORS, cross_origin
 # https://stackoverflow.com/questions/30669474/beyond-top-level-package-error-in-relative-import
 sys.path.append("..")
 
-from nyam_restaurants_algorithms.app.models import Pizza
+from nyam_restaurants_algorithms.app.models import Pizza, CartItemPizza
 from nyam_restaurants_algorithms.pizziamo_net.database import DatabasePizziamoNet
 from nyam_restaurants_algorithms.pizziamo_net.names import NamesPizziamoNet
 from nyam_restaurants_algorithms.pizziamo_net.prices import PricesPizziamoNet
@@ -28,7 +28,7 @@ def pizza_name_and_price():
         name = 'ciao'
         price = 2
         name_formatted = None
-        
+
     elif pizzeria == 'pizziamo.net':
         database = DatabasePizziamoNet(json=menu)
         names_algs = NamesPizziamoNet(database=database, use_business_software_algs=True)
@@ -37,10 +37,27 @@ def pizza_name_and_price():
         prices_algs = PricesPizziamoNet(database=database, use_business_software_algs=True)
         price = prices_algs.price_pizza(pizza=pizza)
     else:
-        name = None
-        name_formatted = None
-        price = None
+        raise Exception('wtf?')
     return json.dumps({'name': name, 'name_formatted': name_formatted, 'price': price})
+
+
+@app.route("/extra_costs/", methods=['POST'])
+@cross_origin()
+def extra_costs():
+    data = request.get_json()
+    pizzeria = data['pizzeria']
+    menu = data['menu']
+    pizzas_in_cart = [CartItemPizza(json=x) for x in data['pizza_in_cart']]
+    delivery_type = data['delivery_type']
+    if pizzeria == 'docode.it':
+        delivery_cost = -100
+    elif pizzeria == 'pizziamo.net':
+        database = DatabasePizziamoNet(json=menu)
+        prices_algs = PricesPizziamoNet(database=database, use_business_software_algs=True)
+        delivery_cost = prices_algs.delivery_cost(pizzas_in_cart=pizzas_in_cart, delivery_type=delivery_type)
+    else:
+        raise Exception('wtf?')
+    return json.dumps({'delivery_cost': delivery_cost})
 
 
 if __name__ == '__main__':
