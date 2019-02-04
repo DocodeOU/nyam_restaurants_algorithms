@@ -10,7 +10,7 @@ class NamesPizziamoNet(AbstractNames):
     def __init__(self, database: DatabasePizziamoNet, use_business_software_algs: bool):
         self.DATABASE = database
         self.use_business_software_algs = use_business_software_algs
-    
+
     @staticmethod
     def _name_with_pizza_options(pizza: Pizza, initial_name: str) -> str:
         sorted_pizza_options = pizza.pizza_options
@@ -20,7 +20,7 @@ class NamesPizziamoNet(AbstractNames):
             name = f'{pizza_option.name} {name}' \
                 if pizza_option.place_at_beggining_of_name else f'{name} {pizza_option.name}'
         return name
-    
+
     def _name_of_missing_ingredient(self, current_name: str, ingredient: Ingredient,
                                     now_it_has_pomodoro: bool,
                                     now_it_has_mozzarella: bool) -> str:
@@ -33,7 +33,7 @@ class NamesPizziamoNet(AbstractNames):
                 if self.use_business_software_algs and ingredient.name_business_software_shortened \
                 else ingredient.name
             return f'{current_name} - {ing_name}'
-    
+
     def _name_of_pizza_ingredient(self, ingredient: Ingredient, pizza_menu: Pizza) -> str:
         just_name = ingredient.name_business_software_shortened \
             if self.use_business_software_algs and ingredient.name_business_software_shortened \
@@ -58,22 +58,22 @@ class NamesPizziamoNet(AbstractNames):
         else:
             # se c'e gia, ma e cambiato entrata uscita, allora mettiamo una parentesi
             return f' ({just_name})'
-    
+
     @staticmethod
     def _ingredient_was_not_in_da_pizza(ingredient: Ingredient, pizza: Pizza) -> bool:
         return len([ing for ing in pizza.ingredients if ing.id == ingredient.id]) == 0
-    
+
     def _find_missing_ingredients(self, pizza: Pizza, pizza_menu: Pizza) -> List[Ingredient]:
         return [ing for ing in pizza_menu.ingredients if
                 self._ingredient_was_not_in_da_pizza(ingredient=ing, pizza=pizza)]
-    
+
     def _find_added_ingredients(self, pizza: Pizza, pizza_menu: Pizza) -> List[Ingredient]:
         return [ing for ing in pizza.ingredients if
                 ing.quantity > 1  # se la quantita è aumentata
                 or ing.just_a_little  # se ne vogliamo poco ora
                 or ing.cooked_in_oven_by_default == ing.cooked_out  # se l uscita è cambiata da quella di base
                 or self._ingredient_was_not_in_da_pizza(ingredient=ing, pizza=pizza_menu)]  # oppure se prima non c'era
-    
+
     def _find_similar_pizza(self, pizza: Pizza) -> Pizza:
         # Troviamo nel menu tutte le pizze che hanno tutti gli ingredienti della pizza ma non ne hanno altri in più
         def is_similar_pizza(pizza_menu: Pizza):
@@ -83,13 +83,13 @@ class NamesPizziamoNet(AbstractNames):
             # Verifichiamo se ogni ingrediente corrisponde
             pizza_ingredients_ids = [ing.id for ing in pizza.ingredients]
             return all(ing.id in pizza_ingredients_ids for ing in pizza_menu.ingredients)
-        
+
         similar_pizzas = [x for x in self.DATABASE.pizzas if is_similar_pizza(x)]
         # sortiamo per numero di ingredienti
         similar_pizzas.sort(key=lambda x: len(x.ingredients), reverse=True)
         # ritorniamo la pizza che ha più ingredienti corrispondenti
         return similar_pizzas[0]
-    
+
     def name_of_pizza(self, pizza: Pizza) -> str:
         # troviamo la pizza di partenza
         original_pizza = next(x for x in self.DATABASE.pizzas if x.id == pizza.id)
@@ -132,3 +132,20 @@ class NamesPizziamoNet(AbstractNames):
         # e rimuovo gli spazi di troppo
         name = re.sub(' +', ' ', name).strip()
         return name
+
+    @staticmethod
+    def name_formatted(pizza: Pizza, current_name: str):
+        new_name = current_name
+        ingredients_cooked_out = [x for x in pizza.ingredients if x.cooked_out]
+        has_cooked_in_oven_ingredients_in_name = len(
+            [x for x in pizza.ingredients if not x.cooked_out and x.name in current_name]) > 0
+        has_cooked_out_ingredients = len(ingredients_cooked_out) > 0
+        # se nel nome non ci sono ingredienti che poi sono all entrata
+        if not has_cooked_in_oven_ingredients_in_name and has_cooked_out_ingredients:
+            # sottilineamo tutto il nome
+            new_name = f'<u>{current_name}</u>'
+        elif has_cooked_out_ingredients:
+            # altrimenti sottilineamo gli ingredienti all uscita
+            for ing in ingredients_cooked_out:
+                new_name = new_name.replace(ing.name, f'<u>{ing.name}</u>')
+        return new_name
