@@ -47,7 +47,7 @@ def extra_costs():
     data = request.get_json()
     pizzeria = data['pizzeria']
     menu = data['menu']
-    pizzas_in_cart = [CartItemPizza(json=x) for x in data['pizza_in_cart']]
+    pizzas_in_cart = [CartItemPizza(json=x) for x in data['pizzas_in_cart']]
     delivery_type = data['delivery_type']
     if pizzeria == 'docode.it':
         delivery_cost = -100
