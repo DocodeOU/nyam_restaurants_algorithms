@@ -100,6 +100,12 @@ class CartItemDessert(Dessert):
         self.quantity: int = json['quantity']
 
 
+class CartItemVoucher(Dessert):
+    def __init__(self, json: dict):
+        self.id: int = json['id']
+        self.quantity: int = json['quantity']
+
+
 class DeliveryType:
     def __init__(self, json):
         self.id: int = json['id']
