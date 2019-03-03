@@ -13,15 +13,16 @@ class PricesPizziamoNet(AbstractPrices):
         self.DATABASE = database
         self.use_business_software_algs = use_business_software_algs
     
-    @staticmethod
-    def _price_pizza_menu(pizza: Pizza, pizza_menu: Pizza) -> float:
+    def _price_pizza_menu(self, pizza: Pizza, pizza_menu: Pizza) -> float:
+       
         """
         Prezzo di una pizza che ha gli ingredienti di una pizza del menu
         Si parte dal prezzo del menu e si aggiunge il prezzo degli ingredienti in piu
         """
         price_with_ingredients = pizza_menu.price
         for ing in pizza.ingredients:
-            price_with_ingredients += ing.price * (ing.quantity - 1)
+            db_ingredient = self.DATABASE.get_ingredient_from_pizza_ingredient(ing)
+            price_with_ingredients += db_ingredient.price * (ing.quantity - 1)
         return price_with_ingredients
     
     def _price_pizza_not_in_menu(self, pizza: Pizza) -> float:
@@ -43,7 +44,8 @@ class PricesPizziamoNet(AbstractPrices):
         # aggiungiamo il prezzo degli ingredienti
         price_with_ingredients = price_base
         for ing in pizza.ingredients:
-            price_with_ingredients += ing.price * ing.quantity
+            db_ingredient = self.DATABASE.get_ingredient_from_pizza_ingredient(ing)
+            price_with_ingredients += db_ingredient.price * ing.quantity
         return price_with_ingredients
     
     def price_pizza(self, pizza: Pizza) -> float:

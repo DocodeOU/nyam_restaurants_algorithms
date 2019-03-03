@@ -1,22 +1,27 @@
 from typing import List
 
 
-class Ingredient:
-    def __init__(self, json):
+class PizzaIngredient:
+    def __init__(self, json: dict):
         self.id: int = json['id']
         self.name: str = json['name']
-        self.price: float = json['price']
         self.quantity: int = json['quantity'] if 'quantity' in json else 1
-        self.cooked_out_by_default: bool = json['cooked_out_by_default']
-        # TODO la riga sotto e sospettosa
-        self.cooked_out: bool = json['cooked_out'] if 'cooked_out' in json else self.cooked_out_by_default
+        # nella costruzione del db questa field non c'e e quindi prendiamo il default
+        self.cooked_out: bool = json['cooked_out'] if 'cooked_out' in json else json['cooked_out_by_default']
         self.just_a_little: bool = json['just_a_little'] if 'just_a_little' in json else False
+
+
+class Ingredient(PizzaIngredient):
+    def __init__(self, json):
+        super(Ingredient, self).__init__(json=json)
+        self.price: float = json['price']
+        self.cooked_out_by_default: bool = json['cooked_out_by_default']
         self.name_business_software_shortened: bool = json[
             'name_business_software_shortened'] if 'name_business_software_shortened' in json else None
 
 
 class PizzaOption:
-    def __init__(self, json):
+    def __init__(self, json: dict):
         self.id: int = json['id']
         self.name: str = json['name']
         self.price: float = json['price']
@@ -25,11 +30,11 @@ class PizzaOption:
 
 
 class Pizza:
-    def __init__(self, json):
+    def __init__(self, json: dict):
         self.id: int = json['id'] if 'id' in json else None
         self.name: str = json['name'] if 'name' in json else None
         self.price: float = json['price'] if 'price' in json else None
-        self.ingredients: List[Ingredient] = [Ingredient(json=x) for x in json['ingredients']]
+        self.ingredients: List[PizzaIngredient] = [PizzaIngredient(json=x) for x in json['ingredients']]
         self.pizza_options: List[PizzaOption] = [PizzaOption(json=x) for x in
                                                  json['pizza_options']] if 'pizza_options' in json else []
         self.type: int = json['type']

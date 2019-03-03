@@ -1,4 +1,4 @@
-from .models import Consts, Pizza, Ingredient, PizzaOption
+from .models import Consts, Pizza, Ingredient, PizzaOption, PizzaIngredient
 
 
 class AbstractDatabase:
@@ -15,3 +15,6 @@ class AbstractDatabase:
         # self.delivery_type_home = next(x for x in delivery_types if x.name == 'Domicilio')
         # self.type_pizza = next(x for x in types_of_pizzas if x.name == 'Pizza')
         # self.type_cecio = next(x for x in types_of_pizzas if x.name == 'Cecio')
+        
+    def get_ingredient_from_pizza_ingredient(self, pizza_ingredient: PizzaIngredient) -> Ingredient:
+        return next(x for x in self.ingredients if x.id == pizza_ingredient.id)
