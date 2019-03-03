@@ -38,10 +38,10 @@ class NamesPizziamoNet(AbstractNames):
         just_name = ingredient.name_business_software_shortened \
             if self.use_business_software_algs and ingredient.name_business_software_shortened \
             else ingredient.name
-        if ingredient.cooked_in_oven_by_default and ingredient.cooked_out:
+        if not ingredient.cooked_out_by_default and ingredient.cooked_out:
             # se in origine era all'entrata e ora è all'uscita
             just_name = f'{just_name} Usc.'
-        elif not ingredient.cooked_in_oven_by_default and not ingredient.cooked_out:
+        elif ingredient.cooked_out_by_default and not ingredient.cooked_out:
             # se in origine era all uscita e ora è all'entrata
             just_name = f'{just_name} Ent.'
         its_a_new_ingredient = self._ingredient_was_not_in_da_pizza(ingredient=ingredient, pizza=pizza_menu)
@@ -71,7 +71,7 @@ class NamesPizziamoNet(AbstractNames):
         return [ing for ing in pizza.ingredients if
                 ing.quantity > 1  # se la quantita è aumentata
                 or ing.just_a_little  # se ne vogliamo poco ora
-                or ing.cooked_in_oven_by_default == ing.cooked_out  # se l uscita è cambiata da quella di base
+                or ing.cooked_out_by_default != ing.cooked_out  # se l uscita è cambiata da quella di base
                 or self._ingredient_was_not_in_da_pizza(ingredient=ing, pizza=pizza_menu)]  # oppure se prima non c'era
 
     def _find_similar_pizza(self, pizza: Pizza) -> Pizza:

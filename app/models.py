@@ -7,8 +7,9 @@ class Ingredient:
         self.name: str = json['name']
         self.price: float = json['price']
         self.quantity: int = json['quantity'] if 'quantity' in json else 1
-        self.cooked_in_oven_by_default: bool = json['cooked_in_oven_by_default']
-        self.cooked_out: bool = json['cooked_out'] if 'cooked_out' in json else not self.cooked_in_oven_by_default
+        self.cooked_out_by_default: bool = json['cooked_out_by_default']
+        # TODO la riga sotto e sospettosa
+        self.cooked_out: bool = json['cooked_out'] if 'cooked_out' in json else self.cooked_out_by_default
         self.just_a_little: bool = json['just_a_little'] if 'just_a_little' in json else False
         self.name_business_software_shortened: bool = json[
             'name_business_software_shortened'] if 'name_business_software_shortened' in json else None
