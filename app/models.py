@@ -124,7 +124,7 @@ class TypeOfPizza:
         self.name: str = json['name']
 
 
-class Consts:
+class Restaurant:
     def __init__(self, json):
         self.ingredient_mozzarella: int = json['ingredient_mozzarella']
         self.ingredient_pomodoro: int = json['ingredient_pomodoro']

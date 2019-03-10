@@ -1,9 +1,9 @@
-from .models import Consts, Pizza, Ingredient, PizzaOption, PizzaIngredient
+from .models import Restaurant, Pizza, Ingredient, PizzaOption, PizzaIngredient
 
 
 class AbstractDatabase:
     def __init__(self, json: dict):
-        self.consts = Consts(json=json['consts'])
+        self.restaurant = Restaurant(json=json['consts'])
         self.pizzas = [Pizza(json=x) for x in json['pizzas']]
         self.ingredients = [Ingredient(json=x) for x in json['ingredients']]
         self.pizza_options = [PizzaOption(json=x) for x in json['pizza_options']]
