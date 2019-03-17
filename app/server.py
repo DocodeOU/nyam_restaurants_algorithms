@@ -24,12 +24,15 @@ def pizza_name_and_price():
     pizzeria = data['pizzeria']
     menu = data['menu']
     pizza = Pizza(json=data['pizza'])
-    if pizzeria == 'docode.it':
-        name = 'ciao'
-        price = 2
-        name_formatted = None
+    if pizzeria == 'docodeit':
+        database = DatabasePizziamoNet(json=menu)
+        names_algs = NamesPizziamoNet(database=database, use_business_software_algs=True)
+        name = names_algs.name_of_pizza(pizza=pizza)
+        name_formatted = names_algs.name_formatted(pizza=pizza, current_name=name)
+        prices_algs = PricesPizziamoNet(database=database, use_business_software_algs=True)
+        price = prices_algs.price_pizza(pizza=pizza)
 
-    elif pizzeria == 'pizziamo.net':
+    elif pizzeria == 'pizziamonet':
         database = DatabasePizziamoNet(json=menu)
         names_algs = NamesPizziamoNet(database=database, use_business_software_algs=True)
         name = names_algs.name_of_pizza(pizza=pizza)
