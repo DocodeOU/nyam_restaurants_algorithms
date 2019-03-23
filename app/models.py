@@ -4,7 +4,7 @@ from typing import List
 class PizzaIngredient:
     def __init__(self, json: dict):
         self.id: int = json['id']
-        self.name: str = json['name']
+        self.name: str = json['name'] if 'name' in json else None
         self.quantity: int = json['quantity'] if 'quantity' in json else 1
         # nella costruzione del db questa field non c'e e quindi prendiamo il default
         self.cooked_out: bool = json['cooked_out'] if 'cooked_out' in json else json['cooked_out_by_default']
