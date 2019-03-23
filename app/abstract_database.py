@@ -18,3 +18,6 @@ class AbstractDatabase:
         
     def get_ingredient_from_pizza_ingredient(self, pizza_ingredient: PizzaIngredient) -> Ingredient:
         return next(x for x in self.ingredients if x.id == pizza_ingredient.id)
+    
+    # def get_type_of_pizza(self, pizza: Pizza) -> int:
+    #    return next(x.type for x in self.pizzas if x.id == pizza.id)
