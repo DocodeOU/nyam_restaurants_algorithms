@@ -32,14 +32,14 @@ class NamesPizziamoNet(AbstractNames):
         else:
             ing_name = db_ingredient.name_business_software_shortened \
                 if self.use_business_software_algs and db_ingredient.name_business_software_shortened \
-                else ingredient.name
+                else db_ingredient.name
             return f'{current_name} - {ing_name}'
     
     def _name_of_pizza_ingredient(self, ingredient: PizzaIngredient, pizza_menu: Pizza) -> str:
         db_ingredient = self.DATABASE.get_ingredient_from_pizza_ingredient(ingredient)
         just_name = db_ingredient.name_business_software_shortened \
             if self.use_business_software_algs and db_ingredient.name_business_software_shortened \
-            else ingredient.name
+            else db_ingredient.name
         if not db_ingredient.cooked_out_by_default and ingredient.cooked_out:
             # se in origine era all'entrata e ora è all'uscita
             just_name = f'{just_name} Usc.'
