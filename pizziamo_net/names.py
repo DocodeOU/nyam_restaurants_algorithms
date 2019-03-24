@@ -11,9 +11,8 @@ class NamesPizziamoNet(AbstractNames):
         self.DATABASE = database
         self.use_business_software_algs = use_business_software_algs
     
-    @staticmethod
-    def _name_with_pizza_options(pizza: Pizza, initial_name: str) -> str:
-        sorted_pizza_options = pizza.pizza_options
+    def _name_with_pizza_options(self, pizza: Pizza, initial_name: str) -> str:
+        sorted_pizza_options = [self.DATABASE.get_pizza_option_from_id(x.id) for x in pizza.pizza_options]
         sorted_pizza_options.sort(key=lambda x: x.name)
         name = initial_name
         for pizza_option in sorted_pizza_options:

@@ -23,8 +23,8 @@ class Ingredient(PizzaIngredient):
 class PizzaOption:
     def __init__(self, json: dict):
         self.id: int = json['id']
-        self.name: str = json['name']
-        self.price: float = json['price']
+        self.name: str = json['name'] if 'name' in json else None
+        self.price: float = json['price'] if 'price' in json else None
         self.place_at_beggining_of_name: bool = json[
             'place_at_beggining_of_name'] if 'place_at_beggining_of_name' in json else False
 
