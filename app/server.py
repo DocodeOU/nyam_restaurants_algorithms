@@ -53,7 +53,9 @@ def extra_costs():
     pizzas_in_cart = [CartItemPizza(json=x) for x in data['pizzas_in_cart']]
     delivery_type = data['delivery_type']
     if pizzeria == 'docodeit':
-        delivery_cost = -100
+        database = DatabasePizziamoNet(json=menu)
+        prices_algs = PricesPizziamoNet(database=database, use_business_software_algs=True)
+        delivery_cost = prices_algs.delivery_cost(pizzas_in_cart=pizzas_in_cart, delivery_type=delivery_type)
     elif pizzeria == 'pizziamonet':
         database = DatabasePizziamoNet(json=menu)
         prices_algs = PricesPizziamoNet(database=database, use_business_software_algs=True)
