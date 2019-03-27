@@ -7,10 +7,17 @@ from flask_cors import CORS, cross_origin
 # https://stackoverflow.com/questions/30669474/beyond-top-level-package-error-in-relative-import
 sys.path.append("..")
 
-from nyam_restaurants_algorithms.app.models import Pizza, CartItemPizza
+from nyam_restaurants_algorithms.app.sentry_dsn import SENTRY_DSN
 from nyam_restaurants_algorithms.pizziamo_net.database import DatabasePizziamoNet
 from nyam_restaurants_algorithms.pizziamo_net.names import NamesPizziamoNet
 from nyam_restaurants_algorithms.pizziamo_net.prices import PricesPizziamoNet
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
+
+sentry_sdk.init(
+    dsn=SENTRY_DSN,
+    integrations=[FlaskIntegration()]
+)
 
 app = Flask(__name__)
 cors = CORS(app)
