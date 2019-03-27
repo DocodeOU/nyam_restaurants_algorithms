@@ -8,6 +8,7 @@ from flask_cors import CORS, cross_origin
 sys.path.append("..")
 
 from nyam_restaurants_algorithms.app.sentry_dsn import SENTRY_DSN
+from nyam_restaurants_algorithms.app.models import Pizza, CartItemPizza
 from nyam_restaurants_algorithms.pizziamo_net.database import DatabasePizziamoNet
 from nyam_restaurants_algorithms.pizziamo_net.names import NamesPizziamoNet
 from nyam_restaurants_algorithms.pizziamo_net.prices import PricesPizziamoNet
