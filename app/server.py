@@ -48,7 +48,7 @@ def pizza_name_and_price():
         prices_algs = PricesPizziamoNet(database=database, use_business_software_algs=True)
         price = prices_algs.price_pizza(pizza=pizza)
     else:
-        raise Exception('wtf?')
+        return json.dumps({'errore': 'pizzeria sconosciuta'})
     return json.dumps({'name': name, 'name_formatted': name_formatted, 'price': price})
 
 
@@ -69,7 +69,7 @@ def extra_costs():
         prices_algs = PricesPizziamoNet(database=database, use_business_software_algs=True)
         delivery_cost = prices_algs.delivery_cost(pizzas_in_cart=pizzas_in_cart, delivery_type=delivery_type)
     else:
-        raise Exception('wtf?')
+        return json.dumps({'errore': 'pizzeria sconosciuta'})
     return json.dumps({'delivery_cost': delivery_cost})
 
 
