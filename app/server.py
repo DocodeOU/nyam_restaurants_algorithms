@@ -12,14 +12,15 @@ from nyam_restaurants_algorithms.app.models import Pizza, CartItemPizza
 from nyam_restaurants_algorithms.pizziamo_net.database import DatabasePizziamoNet
 from nyam_restaurants_algorithms.pizziamo_net.names import NamesPizziamoNet
 from nyam_restaurants_algorithms.pizziamo_net.prices import PricesPizziamoNet
-import sentry_sdk
-from sentry_sdk.integrations.flask import FlaskIntegration
+# import sentry_sdk
+# from sentry_sdk.integrations.flask import FlaskIntegration
 
+'''
 sentry_sdk.init(
     dsn=SENTRY_DSN,
     integrations=[FlaskIntegration()]
 )
-
+'''
 app = Flask(__name__)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
