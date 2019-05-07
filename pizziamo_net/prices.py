@@ -61,7 +61,7 @@ class PricesPizziamoNet(AbstractPrices):
         
         price_with_option = price_without_options
         for pizza_option in pizza.pizza_options:
-            price_with_option += pizza_option.price
+            price_with_option += self.DATABASE.get_pizza_option_from_id(pizza_option.id).price
         return price_with_option
     
     def delivery_cost(self, pizzas_in_cart: List[CartItemPizza], delivery_type: int) -> float:
