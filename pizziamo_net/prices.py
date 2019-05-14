@@ -27,12 +27,12 @@ class PricesPizziamoNet(AbstractPrices):
 
     def _price_pizza_not_in_menu(self, pizza: Pizza) -> float:
         all_pizzas = self.DATABASE.pizzas
-        ing_mozzarella = self.DATABASE.restaurant.ingredient_mozzarella
-        ing_pomodoro = self.DATABASE.restaurant.ingredient_pomodoro
+        ing_mozzarella = self.DATABASE.get_ingredient_mozzarella()
+        ing_pomodoro = self.DATABASE.get_ingredient_pomodoro()
 
         pizza_ingredients_ids = [x.id for x in pizza.ingredients]
         # Verifichiamo se è una schiaccitina non deve avere ne pomodoro ne mozzarella
-        e_schiacciatina = all(x not in pizza_ingredients_ids for x in [ing_mozzarella, ing_pomodoro])
+        e_schiacciatina = all(x not in pizza_ingredients_ids for x in [ing_mozzarella.id, ing_pomodoro.id])
         # le schiacciatine, i calzoni e i ceci hanno dei prezzi di base scritti nel db
         if e_schiacciatina or pizza.type != self.DATABASE.type_pizza:
             price_base = next(

@@ -18,6 +18,12 @@ class AbstractDatabase:
         
     def get_ingredient_from_pizza_ingredient(self, pizza_ingredient: PizzaIngredient) -> Ingredient:
         return next(x for x in self.ingredients if x.id == pizza_ingredient.id)
+    
+    def get_ingredient_mozzarella(self) -> Ingredient:
+        return next(x for x in self.ingredients if x.name == 'Mozzarella')
+    
+    def get_ingredient_pomodoro(self) -> Ingredient:
+        return next(x for x in self.ingredients if x.name == 'Pomodoro')
 
     def get_pizza_option_from_id(self, id: int) -> PizzaOption:
         return next(x for x in self.pizza_options if x.id == id)

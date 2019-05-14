@@ -126,5 +126,6 @@ class TypeOfPizza:
 
 class Restaurant:
     def __init__(self, json):
-        self.ingredient_mozzarella: int = json['ingredient_mozzarella']
-        self.ingredient_pomodoro: int = json['ingredient_pomodoro']
+        pass
+        # self.ingredient_mozzarella: int = json['ingredient_mozzarella']
+        # self.ingredient_pomodoro: int = json['ingredient_pomodoro']

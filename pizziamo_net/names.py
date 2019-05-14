@@ -24,9 +24,9 @@ class NamesPizziamoNet(AbstractNames):
                                     now_it_has_pomodoro: bool,
                                     now_it_has_mozzarella: bool) -> str:
         db_ingredient = self.DATABASE.get_ingredient_from_pizza_ingredient(ingredient)
-        if ingredient.id == self.DATABASE.restaurant.ingredient_mozzarella and now_it_has_pomodoro:
+        if ingredient.id == self.DATABASE.get_ingredient_mozzarella().id and now_it_has_pomodoro:
             return f'ROSSA {current_name}'
-        elif ingredient.id == self.DATABASE.restaurant.ingredient_pomodoro and now_it_has_mozzarella:
+        elif ingredient.id == self.DATABASE.get_ingredient_pomodoro().id and now_it_has_mozzarella:
             return f'BIANCA {current_name}'
         else:
             ing_name = db_ingredient.name_business_software_shortened \
@@ -96,8 +96,8 @@ class NamesPizziamoNet(AbstractNames):
         # troviamo la pizza di partenza
         original_pizza = next(x for x in self.DATABASE.pizzas if x.id == pizza.id)
         # controlliamo che la pizza abbia il pomodoro e la mozzarella
-        now_it_has_pomodoro = any([ing.id == self.DATABASE.restaurant.ingredient_pomodoro for ing in pizza.ingredients])
-        now_it_has_mozzarella = any([ing.id == self.DATABASE.restaurant.ingredient_mozzarella for ing in pizza.ingredients])
+        now_it_has_pomodoro = any([ing.id == self.DATABASE.get_ingredient_pomodoro().id for ing in pizza.ingredients])
+        now_it_has_mozzarella = any([ing.id == self.DATABASE.get_ingredient_mozzarella().id for ing in pizza.ingredients])
         # se dobbiamo mostrare gli ingredienti tolti dalla pizza perche nel db è configurata cosi
         # o è stato tolto il pomodoro
         # o è stato tolta la mozzarella
