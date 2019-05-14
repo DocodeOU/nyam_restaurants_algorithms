@@ -67,7 +67,7 @@ class PricesPizziamoNet(AbstractPrices):
 
     @staticmethod
     def _check_if_in_pizza(ingredient: PizzaIngredient, pizza: Pizza) -> bool:
-        return len([ing for ing in pizza.ingredients if ing.id == ingredient.id]) > 0
+        return any(ing.id == ingredient.id for ing in pizza.ingredients)
 
     def price_pizza(self, pizza: Pizza) -> float:
         all_pizzas = self.DATABASE.pizzas
