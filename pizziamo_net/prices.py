@@ -7,6 +7,10 @@ from .database import DatabasePizziamoNet
 
 COSTO_CONSEGNA = 0.5
 
+CINQUE_FORMAGGI = 117
+VERDURE = 123
+IRON_MAN = 130
+
 
 class PricesPizziamoNet(AbstractPrices):
     def __init__(self, database: DatabasePizziamoNet, use_business_software_algs: bool):
@@ -78,8 +82,7 @@ class PricesPizziamoNet(AbstractPrices):
             price_without_options = self._price_pizza_menu(pizza=pizza, pizza_menu=pizza_trovata)
         except StopIteration:
             # Se dobbiamo calcolare il prezzo partendo dalla base di partenza della pizza del menu
-            # TODO: capire in base a cosa fare sto if
-            if False:
+            if pizza.id in [VERDURE, IRON_MAN, CINQUE_FORMAGGI]:
                 pizza_menu = next(x for x in all_pizzas if pizza.id == x.id)
                 price_without_options = self._price_pizza_michele(pizza, pizza_menu)
             else:
