@@ -37,6 +37,7 @@ class Pizza:
         self.ingredients: List[PizzaIngredient] = [PizzaIngredient(json=x) for x in json['ingredients']]
         self.pizza_options: List[PizzaOption] = [PizzaOption(json=x) for x in
                                                  json['pizza_options']] if 'pizza_options' in json else []
+        self.category: int = json['category'] if 'category' in json else None
         self.type: int = json['type']
         self.show_removed_toppings_in_name: bool = json[
             'show_removed_toppings_in_name'] if 'show_removed_toppings_in_name' in json else False
@@ -85,6 +86,7 @@ class Drink:
         self.id: int = json['id']
         self.name: str = json['name'] if 'name' in json else None
         self.price: float = json['price'] if 'price' in json else None
+        self.type: int = json['type'] if 'type' in json else None
 
 
 class CartItemDrink(Drink):
