@@ -95,20 +95,20 @@ class CartItemDrink(Drink):
         self.quantity: int = json['quantity']
 
 
-class Dessert:
+class OtherProduct:
     def __init__(self, json):
         self.id: int = json['id']
         self.name: str = json['name'] if 'name' in json else None
         self.price: float = json['price'] if 'price' in json else None
 
 
-class CartItemDessert(Dessert):
+class CartItemOtherProduct(OtherProduct):
     def __init__(self, json: dict):
-        super(CartItemDessert, self).__init__(json=json)
+        super(CartItemOtherProduct, self).__init__(json=json)
         self.quantity: int = json['quantity']
 
 
-class CartItemVoucher(Dessert):
+class CartItemVoucher(OtherProduct):
     def __init__(self, json: dict):
         self.id: int = json['id']
         self.quantity: int = json['quantity']
