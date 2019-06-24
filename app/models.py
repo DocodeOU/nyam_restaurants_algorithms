@@ -110,6 +110,7 @@ class CartItemOtherProduct(OtherProduct):
 
 class CartItemVoucher(OtherProduct):
     def __init__(self, json: dict):
+        super(CartItemVoucher, self).__init__(json=json)
         self.id: int = json['id']
         self.quantity: int = json['quantity']
 
