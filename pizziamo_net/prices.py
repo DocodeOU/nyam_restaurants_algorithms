@@ -43,7 +43,7 @@ class PricesPizziamoNet(AbstractPrices):
                 x for x in all_pizzas if x.type == pizza.type and len(x.ingredients) == 0).price
         else:
             # prezzo base per la pizza
-            price_base = 4
+            price_base = 4.5
 
         # aggiungiamo il prezzo degli ingredienti
         price_with_ingredients = price_base
