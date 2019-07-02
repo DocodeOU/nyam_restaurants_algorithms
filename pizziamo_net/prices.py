@@ -31,14 +31,15 @@ class PricesPizziamoNet(AbstractPrices):
 
     def _price_pizza_not_in_menu(self, pizza: Pizza) -> float:
         all_pizzas = self.DATABASE.pizzas
-        ing_mozzarella = self.DATABASE.get_ingredient_mozzarella()
-        ing_pomodoro = self.DATABASE.get_ingredient_pomodoro()
-
-        pizza_ingredients_ids = [x.id for x in pizza.ingredients]
+        # ing_mozzarella = self.DATABASE.get_ingredient_mozzarella()
+        # ing_pomodoro = self.DATABASE.get_ingredient_pomodoro()
+        # TODO: CAPIRE COME GESTIRE LA SCHIACCIATINA E LE PIZZE CHE HANNO UNA MOZZARELLA DIVERSA
+        # pizza_ingredients_ids = [x.id for x in pizza.ingredients]
         # Verifichiamo se è una schiaccitina non deve avere ne pomodoro ne mozzarella
-        e_schiacciatina = all(x not in pizza_ingredients_ids for x in [ing_mozzarella.id, ing_pomodoro.id])
+        # e_schiacciatina = all(x not in pizza_ingredients_ids for x in [ing_mozzarella.id, ing_pomodoro.id])
         # le schiacciatine, i calzoni e i ceci hanno dei prezzi di base scritti nel db
-        if e_schiacciatina or pizza.type != self.DATABASE.type_pizza:
+        # if e_schiacciatina or pizza.type != self.DATABASE.type_pizza:
+        if pizza.type != self.DATABASE.type_pizza:
             price_base = next(
                 x for x in all_pizzas if x.type == pizza.type and len(x.ingredients) == 0).price
         else:
@@ -82,12 +83,12 @@ class PricesPizziamoNet(AbstractPrices):
             price_without_options = self._price_pizza_menu(pizza=pizza, pizza_menu=pizza_trovata)
         except StopIteration:
             # Se dobbiamo calcolare il prezzo partendo dalla base di partenza della pizza del menu
-            if pizza.id in [VERDURE, IRON_MAN, CINQUE_FORMAGGI]:
-                pizza_menu = next(x for x in all_pizzas if pizza.id == x.id)
-                price_without_options = self._price_pizza_michele(pizza, pizza_menu)
-            else:
-                # se dobbiamo calcolare il prezzo matematico
-                price_without_options = self._price_pizza_not_in_menu(pizza=pizza)
+            # if pizza.id in [VERDURE, IRON_MAN, CINQUE_FORMAGGI]:
+            #    pizza_menu = next(x for x in all_pizzas if pizza.id == x.id)
+            #    price_without_options = self._price_pizza_michele(pizza, pizza_menu)
+            # else:
+            # se dobbiamo calcolare il prezzo matematico
+            price_without_options = self._price_pizza_not_in_menu(pizza=pizza)
 
         price_with_option = price_without_options
         for pizza_option in pizza.pizza_options:
