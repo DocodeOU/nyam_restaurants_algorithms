@@ -21,9 +21,14 @@ steps:
     versionSpec: '$(python.version)'
   displayName: 'Use Python $(python.version)'
 
-- script: 'pip install twine'
+- script: python -m pip install -U pip setuptools wheel twine
+  displayName: Install build tools
+
+- script: python setup.py bdist_wheel
+  displayName: Build package
 
 - task: TwineAuthenticate@1
+  displayName: Configure twine authentication
   inputs:
     artifactFeed: 'docodeou'
 
@@ -40,5 +45,6 @@ steps:
   displayName: 'Upload package'
   artifact: drop
 
-- script: 'twine upload -r docodeou --config-file $(PYPIRC_PATH) $(System.DefaultWorkingDirectory)/*'
+- script: 'twine upload -r docodeou --config-file $(PYPIRC_PATH) dist/*'
+  displayName: Publish artifacts
 
