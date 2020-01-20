@@ -27,5 +27,5 @@ steps:
   inputs:
     artifactFeed: 'docodeou'
 
-- script: 'twine upload -r docodeou --config-file $(PYPIRC_PATH) *'
+- script: 'twine upload -r docodeou --config-file $(PYPIRC_PATH) $(System.DefaultWorkingDirectory)'
 
