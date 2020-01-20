@@ -10,8 +10,8 @@ pool:
   vmImage: 'ubuntu-latest'
 strategy:
   matrix:
-    Python36:
-      python.version: '3.6'
+    # Python36:
+    #  python.version: '3.6'
     Python37:
       python.version: '3.7'
 
@@ -27,5 +27,5 @@ steps:
   inputs:
     artifactFeed: 'docodeou'
 
-- script: 'twine upload -r docodeou --config-file $(PYPIRC_PATH) dist/*'
+- script: 'twine upload -r docodeou --config-file $(PYPIRC_PATH) $(Build.ArtifactStagingDirectory)'
 
