@@ -8,6 +8,11 @@ trigger:
 
 pool:
   vmImage: 'ubuntu-latest'
+
+variables:
+  # the name of an Azure artifacts feed
+  artifactFeed: docodeou 
+
 strategy:
   matrix:
     # Python36:
@@ -21,30 +26,17 @@ steps:
     versionSpec: '$(python.version)'
   displayName: 'Use Python $(python.version)'
 
-- script: python -m pip install -U pip setuptools wheel twine
+- script: pip install setuptools wheel twine
   displayName: Install build tools
 
-- script: python setup.py bdist_wheel
+- script: python setup.py sdist bdist_wheel
   displayName: Build package
 
 - task: TwineAuthenticate@1
   displayName: Configure twine authentication
   inputs:
-    artifactFeed: 'docodeou'
+    artifactFeed: $(artifactFeed)
 
-- task: ArchiveFiles@2
-  displayName: 'Archive files'
-  inputs:
-    rootFolderOrFile: $(System.DefaultWorkingDirectory)
-    includeRootFolder: true
-    archiveType: zip
-    archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-    replaceExistingArchive: true
-
-- upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-  displayName: 'Upload package'
-  artifact: drop
-
-- script: 'twine upload -r docodeou --config-file $(PYPIRC_PATH) dist/*'
+- script: 'twine upload -r $(artifactFeed) --config-file $(PYPIRC_PATH) dist/*'
   displayName: Publish artifacts
 
