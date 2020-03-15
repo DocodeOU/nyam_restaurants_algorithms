@@ -182,4 +182,4 @@ fabric.properties
 .idea/caches/build_file_checksums.ser
 
 # DOCODE
-app/sentry_dsn.py
+nyam_restaurants_algorithms/app/sentry_dsn.py
