@@ -11,7 +11,7 @@ pool:
 
 variables:
   # the name of an Azure artifacts feed
-  artifactFeed: 'Nyam-public/nyam-public'
+  artifactFeed: 'nyam-public'
 
 strategy:
   matrix:
