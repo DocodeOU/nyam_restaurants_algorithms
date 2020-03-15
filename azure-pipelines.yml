@@ -11,7 +11,7 @@ pool:
 
 variables:
   # the name of an Azure artifacts feed
-  artifactFeed: docodeou 
+  artifactFeed: 'nyam-public'
 
 strategy:
   matrix:
@@ -35,7 +35,7 @@ steps:
 - task: TwineAuthenticate@1
   displayName: Configure twine authentication
   inputs:
-    artifactFeed: $(artifactFeed)
+    artifactFeed: Nyam-public/$(artifactFeed)
 
 - script: 'twine upload -r $(artifactFeed) --config-file $(PYPIRC_PATH) dist/*'
   displayName: Publish artifacts
